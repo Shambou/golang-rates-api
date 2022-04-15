@@ -4,8 +4,9 @@ tasks:
   test:
     cmds:
       - go test -v ./...
-
-  run:
+  lint:
     cmds:
       - golangci-lint run
+  run:
+    cmds:
       - docker-compose up --build
