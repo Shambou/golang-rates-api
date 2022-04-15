@@ -33,8 +33,6 @@ services:
       - db
     networks:
       - fullstack
-    volumes:
-      - ./:/go/src/github.com/Shambou/golang-challenge
 
 volumes:
   database_postgres:

@@ -44,7 +44,7 @@ func New() *Handler {
 	seeder.Execute()
 
 	h.Server = &http.Server{
-		Addr:    "0.0.0.0:" + os.Getenv("PORT"),
+		Addr:    ":" + os.Getenv("PORT"),
 		Handler: h.Router,
 		// Good practice to set timeouts to avoid slow loris attacks.
 		WriteTimeout: time.Second * 15,
