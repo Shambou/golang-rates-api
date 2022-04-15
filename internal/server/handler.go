@@ -34,6 +34,11 @@ func New() *Handler {
 	h.Router = mux.NewRouter()
 	h.MapRoutes()
 
+	err := h.DB.MigrateDB()
+	if err != nil && err.Error() != "no change" {
+		log.Println("failed to setup database", err)
+	}
+
 	h.Server = &http.Server{
 		Addr:    "0.0.0.0:" + os.Getenv("PORT"),
 		Handler: h.Router,
