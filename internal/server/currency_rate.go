@@ -151,7 +151,7 @@ func (h *Handler) StoreRate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	date, err := time.Parse("2006-01-02", postRateReq.Date)
-	if err != nil {
+	if err != nil || date.After(time.Now()) {
 		jsonResponse(w, http.StatusBadRequest, "Date is not valid", nil)
 		return
 	}
