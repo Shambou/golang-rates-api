@@ -19,6 +19,12 @@ type Handler struct {
 	DB     *database.Database
 }
 
+type JsonResponse struct {
+	Status  int         `json:"status"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
+}
+
 // New - creates a new HTTP handler
 func New() *Handler {
 	h := &Handler{
@@ -74,6 +80,18 @@ func (h *Handler) ReadyCheck(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode("I am Ready!"); err != nil {
+		panic(err)
+	}
+}
+
+// jsonResponse - renders json response
+func jsonResponse(w http.ResponseWriter, status int, message string, data interface{}) {
+	w.WriteHeader(status)
+	if err := json.NewEncoder(w).Encode(JsonResponse{
+		Status:  status,
+		Message: message,
+		Data:    data,
+	}); err != nil {
 		panic(err)
 	}
 }
