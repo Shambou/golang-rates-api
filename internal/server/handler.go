@@ -21,7 +21,6 @@ type Handler struct {
 }
 
 type JsonResponse struct {
-	Status  int         `json:"status"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
 }
@@ -97,7 +96,6 @@ func (h *Handler) ReadyCheck(w http.ResponseWriter, r *http.Request) {
 func jsonResponse(w http.ResponseWriter, status int, message string, data interface{}) {
 	w.WriteHeader(status)
 	if err := json.NewEncoder(w).Encode(JsonResponse{
-		Status:  status,
 		Message: message,
 		Data:    data,
 	}); err != nil {
