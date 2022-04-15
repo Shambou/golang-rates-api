@@ -150,6 +150,11 @@ func (h *Handler) StoreRate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if strings.ToTitle(vars["currency"]) == database.BaseCurrency {
+		jsonResponse(w, http.StatusBadRequest, "Can't set rate for USDUSD pair", nil)
+		return
+	}
+
 	date, err := time.Parse("2006-01-02", postRateReq.Date)
 	if err != nil || date.After(time.Now()) {
 		jsonResponse(w, http.StatusBadRequest, "Date is not valid", nil)
