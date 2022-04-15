@@ -104,6 +104,30 @@ func (d *Database) GetRatesInRange(ctx context.Context, quoteCurrency string, fr
 	return rates, nil
 }
 
+// CheckRateQuoteOnDateExists - Checks if rate exists in db
+func (d *Database) CheckRateQuoteOnDateExists(ctx context.Context, quoteCurrency string, date time.Time) bool {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	searchDate := date.Format("2006-01-02")
+	quoteCurrency = strings.ToTitle(quoteCurrency)
+
+	row := d.Client.QueryRowContext(
+		ctx,
+		"select id from currency_rates where quote_currency = $1 and date = $2 order by date desc limit 1",
+		quoteCurrency,
+		searchDate,
+	)
+
+	var id interface{}
+
+	if err := row.Scan(&id); err != nil {
+		return false
+	}
+
+	return true
+}
+
 // GetAllRatesOnDate - gets all available rates on date
 func (d *Database) GetAllRatesOnDate(ctx context.Context, date time.Time) ([]models.CurrencyRate, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
