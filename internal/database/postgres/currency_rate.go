@@ -163,3 +163,37 @@ func (d *Database) GetAllRatesOnDate(ctx context.Context, date time.Time) ([]mod
 
 	return rates, nil
 }
+
+// TableSeeded - checks if db table is already seeded
+func (d *Database) TableSeeded(ctx context.Context) bool {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	row := d.Client.QueryRowContext(
+		ctx,
+		"select 1 from currency_rates limit 1",
+	)
+	var result interface{}
+	if err := row.Scan(&result); err != nil {
+		fmt.Println(err)
+		fmt.Println("opet")
+		return false
+	}
+	return true
+}
+
+// BulkInsert - used only to bulk insert data from csv files
+// code taken from https://stackoverflow.com/questions/60026385/bulk-insert-with-sqlx
+func (d *Database) BulkInsert(rates []models.CurrencyRate) error {
+	queryInsert := `INSERT INTO currency_rates (base_currency, quote_currency, rate, date) VALUES `
+	insertparams := []interface{}{}
+	for i, rate := range rates {
+		p1 := i * 4 // starting position for insert params
+		queryInsert += fmt.Sprintf("($%d,$%d,$%d,$%d),", p1+1, p1+2, p1+3, p1+4)
+		insertparams = append(insertparams, rate.BaseCurrency, rate.QuoteCurrency, rate.Rate, rate.Date)
+	}
+	queryInsert = queryInsert[:len(queryInsert)-1] // remove trailing ","
+	d.Client.MustExec(queryInsert, insertparams...)
+
+	return nil
+}

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	database "github.com/Shambou/golang-challenge/internal/database/postgres"
+	"github.com/Shambou/golang-challenge/internal/seeds"
 	"github.com/gorilla/mux"
 )
 
@@ -38,6 +39,9 @@ func New() *Handler {
 	if err != nil && err.Error() != "no change" {
 		log.Println("failed to setup database", err)
 	}
+
+	seeder := seeds.New(h.DB)
+	seeder.Execute()
 
 	h.Server = &http.Server{
 		Addr:    "0.0.0.0:" + os.Getenv("PORT"),
