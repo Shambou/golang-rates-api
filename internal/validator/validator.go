@@ -46,6 +46,7 @@ func (v *Validator) Date(fields ...string) {
 	}
 }
 
+// ValidRate - checks if field value is valid decimal first then checks if it's less than or equal to zero
 func (v *Validator) ValidRate(field string) {
 	value, err := decimal.NewFromString(v.Get(field))
 	if err != nil {
@@ -57,6 +58,7 @@ func (v *Validator) ValidRate(field string) {
 	}
 }
 
+// NotEqualTo - checks if field value is not equal to comparison value
 func (v *Validator) NotEqualTo(field string, comparisonValue string) {
 	value := v.Get(field)
 
