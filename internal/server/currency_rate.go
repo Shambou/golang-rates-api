@@ -146,7 +146,8 @@ func (h *Handler) StoreRate(w http.ResponseWriter, r *http.Request) {
 
 	v := validator.New(data)
 	v.Date("date")
-	v.NotEqualTo("currency", database.BaseCurrency)
+	v.DateInFuture("date")
+	v.NotEqual("currency", database.BaseCurrency)
 	v.ValidRate("rate")
 
 	if !v.Valid() {
