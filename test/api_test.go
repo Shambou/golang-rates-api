@@ -154,7 +154,7 @@ func TestStoreRate(t *testing.T) {
 
 		assert.NoError(t, err)
 
-		assert.Equal(t, 400, resp.StatusCode())
+		assert.Equal(t, 422, resp.StatusCode())
 	})
 
 	t.Run("test store rate:invalid rate", func(t *testing.T) {
