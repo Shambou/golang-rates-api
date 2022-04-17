@@ -23,6 +23,7 @@ type Handler struct {
 type JsonResponse struct {
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
+	Errors  interface{} `json:"errors"`
 }
 
 // New - creates a new HTTP handler
@@ -93,11 +94,12 @@ func (h *Handler) ReadyCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 // jsonResponse - renders json response
-func jsonResponse(w http.ResponseWriter, status int, message string, data interface{}) {
+func jsonResponse(w http.ResponseWriter, status int, message string, data interface{}, errors interface{}) {
 	w.WriteHeader(status)
 	if err := json.NewEncoder(w).Encode(JsonResponse{
 		Message: message,
 		Data:    data,
+		Errors:  errors,
 	}); err != nil {
 		panic(err)
 	}
