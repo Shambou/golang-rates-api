@@ -114,7 +114,7 @@ func (d *Database) CheckRateQuoteOnDateExists(ctx context.Context, quoteCurrency
 
 	row := d.Client.QueryRowContext(
 		ctx,
-		"select id from currency_rates where quote_currency = $1 and date = $2 order by date desc limit 1",
+		"select id from currency_rates where quote_currency = $1 and date = $2 limit 1",
 		quoteCurrency,
 		searchDate,
 	)
