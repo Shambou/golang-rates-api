@@ -19,7 +19,7 @@ func (v *Validator) Valid() bool {
 	return len(v.Errors) == 0
 }
 
-// New - initializes a form struct
+// New - initializes a validator struct
 func New(data map[string]string) *Validator {
 	return &Validator{
 		data,
