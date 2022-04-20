@@ -18,5 +18,7 @@ func (h *Handler) MapRoutes() {
 
 	apiRouter.HandleFunc("/{currency}", h.StoreRate).Methods(http.MethodPost)
 
+	apiRouter.HandleFunc("/file/latest", h.GetLatestFileRate).Queries("quote_currency", "{quote_currency}").Methods(http.MethodGet)
+
 	apiRouter.Use(JSONMiddleware)
 }

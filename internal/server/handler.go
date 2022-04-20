@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"time"
 
+	file "github.com/Shambou/golang-challenge/internal/database/file"
 	database "github.com/Shambou/golang-challenge/internal/database/postgres"
 	"github.com/Shambou/golang-challenge/internal/seeds"
 	"github.com/gorilla/mux"
@@ -18,6 +19,7 @@ type Handler struct {
 	Router *mux.Router
 	Server *http.Server
 	DB     *database.Database
+	File   *file.File
 }
 
 type JsonResponse struct {
@@ -29,7 +31,8 @@ type JsonResponse struct {
 // New - creates a new HTTP handler
 func New() *Handler {
 	h := &Handler{
-		DB: database.NewDatabase(),
+		DB:   database.NewDatabase(),
+		File: file.NewFile("USD", "fxdata/", ".csv"),
 	}
 
 	h.Router = mux.NewRouter()
