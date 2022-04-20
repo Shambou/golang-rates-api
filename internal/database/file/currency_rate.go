@@ -103,5 +103,5 @@ func (data CSV) Less(i, j int) bool {
 	timeT1, _ := time.Parse("2006-01-02", date1)
 	timeT2, _ := time.Parse("2006-01-02", date2)
 
-	return timeT1.Before(timeT2)
+	return timeT1.After(timeT2)
 }
